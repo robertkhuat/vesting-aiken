@@ -1,0 +1,77 @@
+{
+  "preamble": {
+    "title": "robert/vesting",
+    "description": "Aiken contracts for project 'robert/vesting'",
+    "version": "0.0.0",
+    "plutusVersion": "v3",
+    "compiler": {
+      "name": "Aiken",
+      "version": "v1.1.9+2217206"
+    },
+    "license": "Apache-2.0"
+  },
+  "validators": [
+    {
+      "title": "vesting.vesting.spend",
+      "datum": {
+        "title": "datum_opt",
+        "schema": {
+          "$ref": "#/definitions/vesting~1VestingDatum"
+        }
+      },
+      "redeemer": {
+        "title": "_redeemer",
+        "schema": {
+          "$ref": "#/definitions/Data"
+        }
+      },
+      "compiledCode": "59018a010100323232323232322533300232323232325332330083001300937540042646644a66601666e1d2000300c37540022646464a66601c660026eb0c008c040dd50051bae3013301430103754006294454ccc038cc004dd6180118081baa00a375c60266028602860206ea800c4c8cc88c8c8c94ccc050c034c054dd50008a99980a1806980a9baa3019301a0021337100086eb4c064c058dd5000899b89004375a6032602c6ea8004528180c0009980b180b8009980b199809180598099baa301730180014c0103d87a80004c0103d87980004bd7018099baa3003301337540046028602a602a602a602a602a602a602a60226ea802cdd6980098089baa0042301400114a044646600200200644a66602800229404cc894ccc04ccdc78010028a51133004004001375c602c002602e00246024602660266026602660266026602660260026020601a6ea800458c038004c038c03c004c028dd50011b874800858c02cc03000cc028008c024008c024004c010dd50008a4c26cacae6955ceaab9e5573eae815d0aba201",
+      "hash": "328f8c05337391423db288ebf4caae28e1c49c43d1147e3c3084bb93"
+    },
+    {
+      "title": "vesting.vesting.else",
+      "redeemer": {
+        "schema": {}
+      },
+      "compiledCode": "59018a010100323232323232322533300232323232325332330083001300937540042646644a66601666e1d2000300c37540022646464a66601c660026eb0c008c040dd50051bae3013301430103754006294454ccc038cc004dd6180118081baa00a375c60266028602860206ea800c4c8cc88c8c8c94ccc050c034c054dd50008a99980a1806980a9baa3019301a0021337100086eb4c064c058dd5000899b89004375a6032602c6ea8004528180c0009980b180b8009980b199809180598099baa301730180014c0103d87a80004c0103d87980004bd7018099baa3003301337540046028602a602a602a602a602a602a602a60226ea802cdd6980098089baa0042301400114a044646600200200644a66602800229404cc894ccc04ccdc78010028a51133004004001375c602c002602e00246024602660266026602660266026602660260026020601a6ea800458c038004c038c03c004c028dd50011b874800858c02cc03000cc028008c024008c024004c010dd50008a4c26cacae6955ceaab9e5573eae815d0aba201",
+      "hash": "328f8c05337391423db288ebf4caae28e1c49c43d1147e3c3084bb93"
+    }
+  ],
+  "definitions": {
+    "Data": {
+      "title": "Data",
+      "description": "Any Plutus data."
+    },
+    "Int": {
+      "dataType": "integer"
+    },
+    "VerificationKeyHash": {
+      "title": "VerificationKeyHash",
+      "dataType": "bytes"
+    },
+    "vesting/VestingDatum": {
+      "title": "VestingDatum",
+      "anyOf": [
+        {
+          "title": "VestingDatum",
+          "dataType": "constructor",
+          "index": 0,
+          "fields": [
+            {
+              "title": "lock_until",
+              "$ref": "#/definitions/Int"
+            },
+            {
+              "title": "owner",
+              "$ref": "#/definitions/VerificationKeyHash"
+            },
+            {
+              "title": "beneficiary",
+              "$ref": "#/definitions/VerificationKeyHash"
+            }
+          ]
+        }
+      ]
+    }
+  }
+}
