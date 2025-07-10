@@ -11,8 +11,6 @@ pub type VestingDatum {
 }
 
 validator vesting {
-  // In principle, scripts can be used for different purpose (e.g. minting
-  // assets). Here we make sure it's only used when 'spending' from a eUTxO
   spend(
     datum_opt: Option<VestingDatum>,
     _redeemer: Data,

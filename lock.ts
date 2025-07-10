@@ -11,7 +11,8 @@ import {
 } from "https://deno.land/x/lucid@0.20.9/mod.ts";
 import "jsr:@std/dotenv/load";
 
-const menomic = Deno.env.get("MNEMONIC");
+const menomic1 = Deno.env.get("MNEMONIC1");
+const menomic2 = Deno.env.get("MNEMONIC2");
 const blockfrostId = Deno.env.get("BLOCKFROST_ID");
 const blockfrostNetwork = Deno.env.get("BLOCKFROST_NETWORK");
 
@@ -19,26 +20,53 @@ const lucid = new Lucid({
   provider: new Blockfrost(blockfrostNetwork, blockfrostId),
 });
 
-lucid.selectWalletFromSeed(menomic);
+const lucid2 = new Lucid({
+  provider: new Blockfrost(blockfrostNetwork, blockfrostId),
+});
+
+lucid2.selectWalletFromSeed(menomic2);
+lucid.selectWalletFromSeed(menomic1);
 const address = await lucid.wallet.address();
 console.log("Address: " + address);
+const address2 = await lucid2.wallet.address();
+console.log("Address2: " + address2);
 
 const paymentHashOwner = Addresses.inspect(address).payment?.hash;
 if (!paymentHashOwner) {
   throw new Error("Failed to extract payment hash from address");
 }
 
-const paymentHashBeneficiary = Addresses.inspect(address).payment?.hash;
+const paymentHashBeneficiary = Addresses.inspect(address2).payment?.hash;
 if (!paymentHashBeneficiary) {
   throw new Error("Failed to extract payment hash from address");
 }
 
 // Set timeline for the lock
-const currentTime = new Date();
-const offset = 2 * 60 * 1000; // 2 phút
-const deadlinePOSIX = BigInt(currentTime.getTime() + offset);
+const currentTime = Date.now();
+console.log("Current Time: " + currentTime);
+const offset = 3 * 60 * 1000; // 3 phút
+const deadlinePOSIX = BigInt(currentTime + offset);
 
 console.log("Deadline POSIX: " + deadlinePOSIX.toString());
+
+// console.log("Current Time (UTC): " + new Date(currentTime).toISOString());
+// console.log(
+//   "Current Time (VN): " +
+//     new Date(currentTime).toLocaleString("vi-VN", {
+//       timeZone: "Asia/Ho_Chi_Minh",
+//     })
+// );
+
+// console.log(
+//   "Deadline POSIX (UTC): " + new Date(Number(deadlinePOSIX)).toISOString()
+// );
+// console.log(
+//   "Deadline POSIX (VN): " +
+//     new Date(Number(deadlinePOSIX)).toLocaleString("vi-VN", {
+//       timeZone: "Asia/Ho_Chi_Minh",
+//     })
+// );
+// Deno.exit(0); // Dừng chương trình tại đây để kiểm tra deadline
 
 const datumInline = Data.to(
   new Constr(0, [deadlinePOSIX, paymentHashOwner, paymentHashBeneficiary])
@@ -62,13 +90,14 @@ const tx = await lucid
   .payToContract(
     contractAddress,
     { Inline: datumInline },
-    { lovelace: 2900000n }
+    { lovelace: 6000000n }
   )
+  .validTo(Date.now() + 100000) // Thay đổi thời gian hết hạn nếu cần
   .commit();
 const signedTx = await tx.sign().commit();
 const txHash = await signedTx.submit();
 console.log(
-  `2900000 Lovelace locked into the contract at:    Tx ID: ${txHash} `
+  `6000000 Lovelace locked into the contract at:    Tx ID: ${txHash} `
 );
 
 // Thay Hieu
