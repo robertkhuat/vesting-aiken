@@ -45,7 +45,7 @@ if (!paymentHashBeneficiary) {
 const currentTime = Date.now();
 console.log("Current Time: " + currentTime);
 const offset = 3 * 60 * 1000; // 3 phút
-const deadlinePOSIX = BigInt(currentTime + offset);
+const deadlinePOSIX = BigInt(currentTime);
 
 console.log("Deadline POSIX: " + deadlinePOSIX.toString());
 
@@ -90,14 +90,13 @@ const tx = await lucid
   .payToContract(
     contractAddress,
     { Inline: datumInline },
-    { lovelace: 6000000n }
+    { lovelace: 8000000n }
   )
-  .validTo(Date.now() + 100000) // Thay đổi thời gian hết hạn nếu cần
   .commit();
 const signedTx = await tx.sign().commit();
 const txHash = await signedTx.submit();
 console.log(
-  `6000000 Lovelace locked into the contract at:    Tx ID: ${txHash} `
+  `8000000 Lovelace locked into the contract at:    Tx ID: ${txHash} `
 );
 
 // Thay Hieu

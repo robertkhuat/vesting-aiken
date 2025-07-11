@@ -42,7 +42,7 @@ if (utxos.length === 0) {
 }
 console.log("UTXOs at contract address:", utxos);
 
-const utxo = utxos.find((u) => u.assets?.["lovelace"] === 6000000n);
+const utxo = utxos.find((u) => u.assets?.["lovelace"] === 8000000n);
 if (!utxo) {
   throw new Error(
     "No UTXO with 5000000 Lovelace found at the contract address"
@@ -61,8 +61,9 @@ const tx = await lucid
   .collectFrom([utxo], redeemer)
   .addSigner(paymentHash)
   .attachScript(validator)
+  .validTo(Date.now()) // Thay đổi thời gian hết hạn nếu cần
   .commit();
 
 const signedTx = await tx.sign().commit();
 const txHash = await signedTx.submit();
-console.log(`7000000 Lovelace unlocked from the contract at: Tx ID: ${txHash}`);
+console.log(`8000000 Lovelace unlocked from the contract at: Tx ID: ${txHash}`);

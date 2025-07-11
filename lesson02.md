@@ -64,10 +64,6 @@ validator vesting {
 
 ```
 
-## **3. Hiểu cách tương tác hợp đồng vesting**
-
-![Mô tả ảnh](URL_hoặc_đường_dẫn_ảnh)
-
 ## **4. Review code offchain: Vesting**
 
 => Check trong file lock.ts và unlock.ts
